@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shopping Cart</title>
+
+    <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
+ 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.js" charset="utf-8"></script>
+    <script src="load.js"></script>
+
+    <meta name="robots" content="noindex,follow" />
+  </head>
+  <body>
+ <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">TEST</a>
+    </div>
+    
+  </div>
+
+</nav>
+
+ 
+    <div class="shopping-cart">
+      <!-- Title -->
+      <div class="title">
+        Simple Shoping Cart
+      </div>
+
+      <!-- Product Start -->
+  
+       
+        <!-- Product End -->
+
+ 
+
+    
+    </div>
+    <div>
+      <table width="100%">
+        <tr><td>
+      <a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+     <td> Total Amount<p class="totalAmount"></p><a href="#myModal" data-toggle="modal" data-target="#myModal" class="btn btn-success">Checkout <i class="fa fa-angle-right"></i></a></td></tr>
+    </table>
+    </div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+ 
+</div>
+<button id="myBtn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div>
+</body>
+</html>
+    <script type="text/javascript">
+ 
+      $(document).on('ready',function(){
+        calculateAmount();
+      }); 
+
+      $(document).on('click', '.minus-btn', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $input = $this.closest('div').find('input');
+        var value = parseInt($input.val());
+        if (value > 1) {
+          value = value - 1;
+        } else {
+          value = 0;
+        }
+
+        $input.val(value);
+        var $amountDiv=$this.parent().prev().closest('div').find('span.price');
+        var $totalDiv=$this.parent().next();
+         $totalDiv.text(parseInt($amountDiv.text())*value);
+          calculateAmount();
+
+
+      });
+
+      $(document).on('click','.plus-btn', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $input = $this.closest('div').find('input');
+        var value = parseInt($input.val());
+
+        if (value < 100) {
+          value = value + 1;
+        } else {
+          value =100;
+        }
+
+        $input.val(value);
+        var $amountDiv=$this.parent().prev().closest('div').find('span.price');
+        var $totalDiv=$this.parent().next();
+        $totalDiv.text(parseInt($amountDiv.text())*value);
+        calculateAmount();
+      });
+
+      $('.like-btn').on('click', function() {
+        $(this).toggleClass('is-active');
+      });
+
+
+
+     function calculateAmount()
+     {   
+
+        var i=0;
+        var amount=0;
+        var items=0;
+      $.getJSON("data.json",function(JsonObject){
+      $.each(JsonObject,function(k,v){
+      $.each(v,function(kk,vv){
+      if (typeof vv.id != "undefined") {
+          amount=amount+parseInt($('.total-price-'+i).text());
+         
+           
+           
+          i++;
+          }
+      });
+         
+    });
+     $('.totalAmount').text(amount);
+    
+  });
+ } </script>
+  
